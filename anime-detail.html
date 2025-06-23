@@ -1,0 +1,394 @@
+<!-- ===== anime-detail.html ===== -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Detalle Anime</title>
+  <style>
+    /* —— tu CSS sin cambios —— */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;overflow-x:hidden;font-family:'Segoe UI',sans-serif;color:#fff}
+    #bg-video{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2}
+    #overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:-1}
+    .container{position:relative;z-index:0;max-width:800px;margin:80px auto;padding:20px;
+      background:rgba(0,0,0,0.7);border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,0.5);
+      animation:fadeIn 1s ease-out}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .back{display:inline-block;margin-bottom:20px;color:#0ff;text-decoration:none;font-weight:bold;
+      transition:color .3s}
+    .back:hover{color:#08c}
+    .anime-cover img{width:100%;border-radius:8px;object-fit:cover;animation:scaleIn .8s ease-out}
+    @keyframes scaleIn{from{transform:scale(1.1)}to{transform:scale(1)}}
+    h1{margin:20px 0;font-size:2em;text-align:center}
+    .desc{margin-bottom:30px;line-height:1.6;color:#eee}
+    details{margin-bottom:20px;border:1px solid #444;border-radius:5px;overflow:hidden}
+    summary{padding:12px 15px;cursor:pointer;background:#0ff;color:#000;font-weight:bold;
+      transition:background .3s}
+    summary:hover{background:#0cc}
+    .season-content{padding:15px;background:rgba(255,255,255,0.05);animation:fadeIn .5s ease-in-out}
+    .season-content img{width:100%;border-radius:5px;margin-bottom:10px}
+    .video-list{list-style:none;margin:0;padding:0}
+    .video-list li{margin-bottom:12px}
+    .video-list a{display:block;padding:10px 15px;background:rgba(255,255,255,0.1);
+      border:1px solid rgba(255,255,255,0.2);border-radius:5px;text-decoration:none;
+      color:#fff;transition:transform .2s,background .3s}
+    .video-list a:hover{background:rgba(0,255,255,0.2);color:#000;transform:translateX(5px)}
+  </style>
+</head>
+<body>
+  <video id="bg-video" autoplay loop muted playsinline>
+    <source src="https://www.dropbox.com/scl/fi/ckoormrj6fgd6zcw0xgwq/galaxia.mp4?rlkey=qs4g9k0rbylylu2hnqls0bf5n&st=b99od388&raw=1" type="video/mp4">
+  </video>
+  <div id="overlay"></div>
+
+  <!-- Música de fondo Re:Zero -->
+  <audio id="rz-ost" loop>
+    <source src="https://www.dropbox.com/scl/fi/rpadd0ws3e232gdh0llf3/ReZERO-Starting-Life-in-Another-World-Opening-Redo.mp3?rlkey=f5uyplbknt9jbsgvg7dr8ztgl&st=3g3h710f&raw=1" type="audio/mpeg">
+  </audio>
+
+  <!-- Música de fondo Konosuba -->
+  <audio id="kb-music" loop>
+    <source src="https://www.dropbox.com/scl/fi/a5ftpvggsb67kx584i0kx/KONOSUBA-Gods-blessing-on-this-wonderful-world-Opening-Fantastic-Dreamer.mp3?rlkey=vjzqpyqn5bqopedx21oiromjx&st=9c47affp&raw=1" type="audio/mpeg">
+  </audio>
+
+  <!-- Música de fondo Izure -->
+  <audio id="iz-ost" loop>
+    <source src="https://www.dropbox.com/scl/fi/ajz2nz6psxadglurd1om4/Izure-Saikyou-no-Renkinjutsushi-Opening-Full-TREASURE-by-DIALOGUE.mp3?rlkey=0fso7p0rl6rwcz5pj31fildzk&st=pxzfm5md&raw=1" type="audio/mpeg">
+  </audio>
+
+  <!-- Música de fondo Jujutsu Kaisen -->
+  <audio id="jj-ost" loop>
+    <source src="https://www.dropbox.com/scl/fi/rej88zlxcncpy43z20716/JUJUTSU-KAISEN-Opening-Kaikai-Kitan.mp3?rlkey=ncsegylfy7wzizfarg9rb91bd&st=p5luxpip&raw=1" type="audio/mpeg">
+  </audio>
+
+  <div class="container">
+    <a href="index.html" class="back">← Volver</a>
+    <div id="contenido"></div>
+  </div>
+
+  <script>
+  const data = {
+    2: {
+      title: "Jujutsu Kaisen",
+      desc: "Takumi Iruma termina siendo arrastrado a una invocación heroica...",
+      cover: "Jujutsu.jpg",
+      seasons: [
+        {
+          num: 1,
+          cover: "Jujutsu1.jpg",
+          eps: [
+              { title: "Jujutsu Kaisen T1 Cap 1",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 2",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 3",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 4",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 5",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 6",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 7",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 8",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 9",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 10", link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 11", link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 12",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 13",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 14",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 15",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 16",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 17",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 18",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 19",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 20",  link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 21", link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 22", link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 23", link: "#" },
+              { title: "Jujutsu Kaisen T1 Cap 24", link: "#" }
+            ]
+          },
+          {
+            num: 2,
+            cover: "Jujutsu2.jpg",
+            eps: [
+              { title: "Jujutsu Kaisen T2 Cap 1",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 2",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 3",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 4",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 5",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 6",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 7",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 8",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 9",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 10", link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 11", link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 12",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 13",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 14",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 15",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 16",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 17",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 18",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 19",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 20",  link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 21", link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 22", link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 23", link: "#" },
+              { title: "Jujutsu Kaisen T2 Cap 24", link: "#" }
+          ]
+        }
+      ]
+    },
+
+      3: {
+        title: "Konosuba",
+        desc: "Kazuma Satou es un chico de preparatoria otaku y hikikomori que no suele salir de casa, pero cuando lo hace, un fatídico (y ridículo) accidente acaba con su vida. En el otro mundo aparece una diosa ante él y le propone comenzar de nuevo su vida en un mundo de magia y espada, pero las condiciones son un tanto peculiares, así que acabará comenzando de cero como aventurero y acompañado de una diosa.",
+        cover: "kono.jpg",
+        seasons: [
+          {
+            num: 1,
+            cover: "konosuba.jpg",
+            eps: [
+              { title: "Konosuba T1 Cap 1",  link: "#" },
+              { title: "Konosuba T1 Cap 2",  link: "#" },
+              { title: "Konosuba T1 Cap 3",  link: "#" },
+              { title: "Konosuba T1 Cap 4",  link: "#" },
+              { title: "Konosuba T1 Cap 5",  link: "#" },
+              { title: "Konosuba T1 Cap 6",  link: "#" },
+              { title: "Konosuba T1 Cap 7",  link: "#" },
+              { title: "Konosuba T1 Cap 8",  link: "#" },
+              { title: "Konosuba T1 Cap 9",  link: "#" },
+              { title: "Konosuba T1 Cap 10", link: "#" },
+              { title: "Konosuba T1 Cap 11", link: "#" }
+            ]
+          },
+          {
+            num: 2,
+            cover: "KONO2.jpg",
+            eps: [
+              { title: "Konosuba T2 Cap 1",  link: "#" },
+              { title: "Konosuba T2 Cap 2",  link: "#" },
+              { title: "Konosuba T2 Cap 3",  link: "#" },
+              { title: "Konosuba T2 Cap 4",  link: "#" },
+              { title: "Konosuba T2 Cap 5",  link: "#" },
+              { title: "Konosuba T2 Cap 6",  link: "#" },
+              { title: "Konosuba T2 Cap 7",  link: "#" },
+              { title: "Konosuba T2 Cap 8",  link: "#" },
+              { title: "Konosuba T2 Cap 9",  link: "#" },
+              { title: "Konosuba T2 Cap 10", link: "#" },
+              { title: "Konosuba T2 Cap 11", link: "#" },
+              { title: "Konosuba Pelicula La leyenda carmesí", link: "#" },
+
+            ]
+          },
+          {
+            num: 3,
+            cover: "kono3.png",
+            eps: [
+              { title: "Konosuba T3 Cap 1",  link: "#" },
+              { title: "Konosuba T3 Cap 2",  link: "#" },
+              { title: "Konosuba T3 Cap 3",  link: "#" },
+              { title: "Konosuba T3 Cap 4",  link: "#" },
+              { title: "Konosuba T3 Cap 5",  link: "#" },
+              { title: "Konosuba T3 Cap 6",  link: "#" },
+              { title: "Konosuba T3 Cap 7",  link: "#" },
+              { title: "Konosuba T3 Cap 8",  link: "#" },
+              { title: "Konosuba T3 Cap 9",  link: "#" },
+              { title: "Konosuba T3 Cap 10", link: "#" },
+              { title: "Konosuba T3 Cap 11", link: "#" }
+            ]
+          }
+        ]
+      },
+
+      4: {
+        title: "Re:Zero − Empezar vida en otro mundo",
+        desc: "Subaru Natsuki es un estudiante corriente de preparatoria que conoce a una hermosa chica de pelo plateado de otro mundo que lo rescata. Para devolverle el favor decide quedarse con ella, pero el destino con el que carga la muchacha es mucho más pesado de lo que Subaru puede imaginar. Los enemigos atacan sin descanso, uno tras otro, hasta que finalmente mueren tanto él como la chica. Subaru no quiere que la chica resulte herida, con lo que jura acabar con cualquier enemigo, con cualquier destino que le aguarde, siempre por protegerla.",
+        // portada
+        cover: "ReZero Temporada 1 Capitulo 0.jpg",
+        seasons: [
+          {
+            num: 1,
+            cover: "re1.jpg",
+            eps: [
+
+              {title:"Re:Zero T1 Cap 1",  link:"https://www.dropbox.com/scl/fi/zrgyad07wgax0x3tant33/ReZero-Temporada-1-Capitulo-1-Espa-ol-Latino.mp4?rlkey=3r6mgn7utdabl6sgdovs08jyz&st=4pdklq0h&raw=1"},
+              {title:"Re:Zero T1 Cap 2",  link:"https://www.dropbox.com/scl/fi/yxu2x1fdgjigk8qoc8mnj/ReZero-Temporada-1-Capitulo-2-Espa-ol-Latino.mp4?rlkey=q2h3atsz2w55ka0f3br10yei6&st=z6fie2kb&raw=1"},
+              {title:"Re:Zero T1 Cap 3",  link:"https://www.dropbox.com/scl/fi/ung8oin2v68b9bn8h10ul/ReZero-Temporada-1-Capitulo-3-Espa-ol-Latino.mp4?rlkey=1kxsyhj3oxe87vu8pml0adgof&st=3msq0buc&raw=1"},
+              {title:"Re:Zero T1 Cap 4",  link:"https://www.dropbox.com/scl/fi/hrd1wpz46n7hi38u4w7by/ReZero-Temporada-1-Capitulo-4-Espa-ol-Latino.mp4?rlkey=taydzmxnvucghvpwuf0gx9r4q&st=lgi8ndrp&raw=1"},
+              {title:"Re:Zero T1 Cap 5",  link:"https://www.dropbox.com/scl/fi/h7aolyl3gn7wzmn30otyl/ReZero-Temporada-1-Capitulo-5-Espa-ol-Latino.mp4?rlkey=y5r5mkkcm3r5i2c4mun8vvfcz&st=3lyzt26r&raw=1"},
+              {title:"Re:Zero T1 Cap 6",  link:"https://www.dropbox.com/scl/fi/dg7pxjm2giv16hcttve8s/ReZero-Temporada-1-Capitulo-6-Espa-ol-Latino.mp4?rlkey=im44td6hqckq8xuvphomwzcur&st=mz2jmugz&raw=1"},
+              {title:"Re:Zero T1 Cap 7",  link:"https://www.dropbox.com/scl/fi/vsfuzhju9rrhnj9kan5cp/ReZero-Temporada-1-Capitulo-7-Espa-ol-Latino.mp4.mp4?rlkey=ocxdqrpr6hwle0ygosxdf8suy&st=2ouhs0pe&raw=1"},
+              {title:"Re:Zero T1 Cap 8",  link:"https://www.dropbox.com/scl/fi/8ti116jjme5cyi1uo0yb4/ReZero-Temporada-1-Capitulo-8-Espa-ol-Latino.mp4.mp4?rlkey=rjds2iqtfxuc3ae7j2ykb2fau&st=caltzwr3&raw=1"},
+              {title:"Re:Zero T1 Cap 9",  link:"https://www.dropbox.com/scl/fi/jedn8jdujd7r7yaes4jla/ReZero-Temporada-1-Capitulo-9-Espa-ol-Latino.mp4.mp4?rlkey=n7hqe3mbmu067nn5s5thy7b7q&st=cynqm3bx&raw=1"},
+              {title:"Re:Zero T1 Cap 10", link:"https://www.dropbox.com/scl/fi/9318wxghqyna2x8wwtytq/ReZero-Temporada-1-Capitulo-10-Espa-ol-Latino.mp4.mp4?rlkey=6ahczms2679oy1x9ww9bzr1lg&st=u995ys9h&raw=1"},
+              {title:"Re:Zero T1 Cap 11", link:"https://www.dropbox.com/scl/fi/ndwb0y6uyrwtdz8vfbp1i/ReZero-Temporada-1-Capitulo-11-Espa-ol-Latino.mp4.mp4?rlkey=3ozyzwg04yymp6vg7emgticpn&st=xk2p0obd&raw=1"},
+              {title:"Re:Zero T1 Cap 12", link:"https://www.dropbox.com/scl/fi/w7r6aj9ykuczfuumgz7yf/ReZero-Temporada-1-Capitulo-12-Espa-ol-Latino.mp4.mp4?rlkey=1wingrvdtdrkmf0a5mjvdggrx&st=oun4z01t&raw=1"},
+              {title:"Re:Zero T1 Cap 13", link:"https://www.dropbox.com/scl/fi/io9kh7d0povt5excw6qiz/ReZero-Temporada-1-Capitulo-13-Espa-ol-Latino.mp4.mp4?rlkey=aa6lu9ueonnlvmkohq1mkqr0m&st=wonf1ob0&raw=1"},
+              {title:"Re:Zero T1 Cap 14", link:"https://www.dropbox.com/scl/fi/5y1ykfaq0m5gulrujcte8/ReZero-Temporada-1-Capitulo-14-Espa-ol-Latino.mp4.mp4?rlkey=czx41rep09c71xki0mybb8gft&st=ysrt1ssr&raw=1"},
+              {title:"Re:Zero T1 Cap 15", link:"https://www.dropbox.com/scl/fi/mecovbhxxbvc4d68dae2v/ReZero-Temporada-1-Capitulo-15-Espa-ol-Latino.mp4.mp4?rlkey=108eujwuthyqobjn5unizn1sm&st=a5721h8w&raw=1"},
+              {title:"Re:Zero T1 Cap 16", link:"https://www.dropbox.com/scl/fi/vsfuzhju9rrhnj9kan5cp/ReZero-Temporada-1-Capitulo-7-Espa-ol-Latino.mp4.mp4?rlkey=ocxdqrpr6hwle0ygosxdf8suy&st=2ouhs0pe&raw=1"},
+              {title:"Re:Zero T1 Cap 17", link:"https://www.dropbox.com/scl/fi/hxrvyxwe1062yykyylmwk/ReZero-Temporada-2-Capitulo-24-Espa-ol-Latino.mp4?rlkey=2xyh9rcfdw8x4k0axviv0pgu6&st=dka4b0me&raw=1"},
+              {title:"Re:Zero T1 Cap 18", link:"https://www.dropbox.com/scl/fi/uru2i8yrmrmyw14181kc4/ReZero-Temporada-1-Capitulo-18-Espa-ol-Latino.mp4.mp4?rlkey=hlpha90785h2qnnmt9hdfaq8j&st=khtbof0j&raw=1"},
+              {title:"Re:Zero T1 Cap 19", link:"https://www.dropbox.com/scl/fi/l7g1aokxystbz8e0op04h/ReZero-Temporada-1-Capitulo-19-Espa-ol-Latino.mp4.mp4?rlkey=0ki9jynw1c8tdcdkwd6h5ps32&st=h4pfpuhx&raw=1"},
+              {title:"Re:Zero T1 Cap 20", link:"https://www.dropbox.com/scl/fi/6givoeay0746k982j5bow/ReZero-Temporada-1-Capitulo-20-Espa-ol-Latino.mp4.mp4?rlkey=d48r6lvnecbf4asdymckb9lpk&st=uy88snsw&raw=1"},
+              {title:"Re:Zero T1 Cap 21", link:"https://www.dropbox.com/scl/fi/cj3e4a2m87h5s1o4lxyjf/ReZero-Temporada-1-Capitulo-21-Espa-ol-Latino.mp4.mp4?rlkey=0vwquoh9cxbpsc74vby3veo2u&st=5uw0ewy2&raw=1"},
+              {title:"Re:Zero T1 Cap 22", link:"https://www.dropbox.com/scl/fi/pe8sauxuevta5ajf2asvs/ReZero-Temporada-1-Capitulo-22-Espa-ol-Latino.mp4.mp4?rlkey=gh54t3hvenb2y3i866zubl3ox&st=q1zmbxvk&raw=1"},
+              {title:"Re:Zero T1 Cap 23", link:"https://www.dropbox.com/scl/fi/wnmcmc155ouhf6g1h6z15/ReZero-Temporada-1-Capitulo-23-Espa-ol-Latino.mp4.mp4?rlkey=1reputj9hjauvsyzwzpxgkhvv&st=jsw86qcz&raw=1"},
+              {title:"Re:Zero T1 Cap 24", link:"https://www.dropbox.com/scl/fi/ev0ezspz3b2gbeazjwokt/ReZero-Temporada-1-Capitulo-24-Espa-ol-Latino.mp4.mp4?rlkey=io71hjm1wdag84q4gl7m3yq4w&st=7s5ni4lj&raw=1"},
+              {title:"Re:Zero T1 Cap 25", link:"https://www.dropbox.com/scl/fi/hp3dsakkzaolj3ti8uaxn/ReZero-Temporada-1-Capitulo-25-Espa-ol-Latino.mp4.mp4?rlkey=4w2epb31k0kw26plsvb6zd79a&st=t7vi8yl7&raw=1"},
+              {title:"Re:Zero OVA 1 Memory Snow", link:"https://www.dropbox.com/scl/fi/dx5fu7ncxmjupsnakoz3x/ReZero-Temporada-1-OVA-1-Memory-Snow-Espa-ol-Latino.mp4?rlkey=q6nk3vye9e5udpi8h6wq39jyw&st=4veo55yj&raw=1"},
+              {title:"Re:Zero OVA 2 Frozen Bonds", link:"https://www.dropbox.com/scl/fi/ujeugofjinpckpobxtgvy/ReZero-Temporada-1-OVA-2-Frozen-Bonds-Espa-ol-Latino.mp4?rlkey=6b8j4cakykc7ib45fbkkc2q3s&st=fbh3v6m0&raw=1"}
+            ]
+          },
+          {
+            num: 2,
+            cover: "wermi.png",
+            eps: [
+              {title:"Re:Zero T2 Cap 1", link:"https://www.dropbox.com/scl/fi/ly4c1u5a9btdevpsp5aex/ReZero-Temporada-2-Capitulo-1-Espa-ol-Latino.mp4.mp4?rlkey=j7jwh0swz15soxvlc0j52lr64&st=zux5xker&raw=1"},
+              {title:"Re:Zero T2 Cap 2", link:"https://www.dropbox.com/scl/fi/uhv5bmmuwagi0b4pfr4nj/ReZero-Temporada-2-Capitulo-2-Espa-ol-Latino.mp4?rlkey=7xkcaw729cosltf73qtk0k9h7&st=1fvgh9gn&raw=1"},
+              {title:"Re:Zero T2 Cap 3", link:"https://www.dropbox.com/scl/fi/g228hkid7p4vvjj6iit3o/ReZero-Temporada-2-Capitulo-3-Espa-ol-Latino.mp4?rlkey=nnh6wyrr2ob5dpzzargg1dyzk&st=gir4hgoq&raw=1"},
+              {title:"Re:Zero T2 Cap 4", link:"https://www.dropbox.com/scl/fi/3iz1eyjio77qdts70sf4l/ReZero-Temporada-2-Capitulo-4-Espa-ol-Latino.mp4?rlkey=3lp6n8wylvwza567r24krjzri&st=7umxzfpq&raw=1"},
+              {title:"Re:Zero T2 Cap 5", link:"https://www.dropbox.com/scl/fi/t5o3wsgk2exavuypecik8/ReZero-Temporada-2-Capitulo-5-Espa-ol-Latino.mp4?rlkey=0l2gzvujf1qlcpvfhrbym1jb6&st=amjtklrk&raw=1"},
+              {title:"Re:Zero T2 Cap 6"},
+              {title:"Re:Zero T2 Cap 7"},
+              {title:"Re:Zero T2 Cap 8"},
+              {title:"Re:Zero T2 Cap 9"},
+              {title:"Re:Zero T2 Cap 10"},
+              {title:"Re:Zero T2 Cap 11"},
+              {title:"Re:Zero T2 Cap 12"},
+              {title:"Re:Zero T2 Cap 13"},
+              {title:"Re:Zero T2 Cap 14"},
+              {title:"Re:Zero T2 Cap 15"},
+              {title:"Re:Zero T2 Cap 16"},
+              {title:"Re:Zero T2 Cap 17"},
+              {title:"Re:Zero T2 Cap 18"},
+              {title:"Re:Zero T2 Cap 19"},
+              {title:"Re:Zero T2 Cap 20"},
+              {title:"Re:Zero T2 Cap 21"},
+              {title:"Re:Zero T2 Cap 22"},
+              {title:"Re:Zero T2 Cap 23"},
+              {title:"Re:Zero T2 Cap 24"},
+              {title:"Re:Zero T2 Cap 25"},
+            ]
+          },
+          {
+            num: 3,
+            cover: "wermi3.png",
+            eps: [
+              {title:"Re:Zero T3 Cap 1", link:"#"},
+              {title:"Re:Zero T3 Cap 2", link:"#"},
+              {title:"Re:Zero T3 Cap 3", link:"#"},
+              {title:"Re:Zero T3 Cap 4", link:"#"},
+              {title:"Re:Zero T3 Cap 5", link:"#"},
+              {title:"Re:Zero T3 Cap 6", link:"#"},
+              {title:"Re:Zero T3 Cap 7", link:"#"},
+              {title:"Re:Zero T3 Cap 8", link:"#"},
+              {title:"Re:Zero T3 Cap 9", link:"#"},
+              {title:"Re:Zero T3 Cap 10", link:"#"},
+              {title:"Re:Zero T3 Cap 11", link:"#"},
+              {title:"Re:Zero T3 Cap 12", link:"#"},
+              {title:"Re:Zero T3 Cap 13", link:"#"},
+              {title:"Re:Zero T3 Cap 14", link:"#"},
+              {title:"Re:Zero T3 Cap 15", link:"#"},
+              {title:"Re:Zero T3 Cap 16", link:"#"}
+            ]
+          }
+        ]
+      },
+      13: {
+        title: "Izure Saikyou no Renkinjutsushi",
+        desc: "Takumi Iruma termina siendo arrastrado a una invocación heroica, aun cuando él no es ningún héroe. Llamado por error a Mildgard, un mundo fantástico de magia y espadas, Takumi ve en esto la oportunidad de empezar desde cero. Aunque anhela una vida pacífica, la diosa Nolyn le concede la “Alquimia”, una habilidad sumamente poderosa que le permite crear casi cualquier cosa, desde espadas sagradas hasta naves voladoras.",
+        cover: "Izure Saikyou no Renkinjutsushi.jpg",
+        seasons: [
+          {
+            num: 1,
+            cover: "IZU.PNG",
+            eps: [
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 1",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 2",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 3",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 4",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 5",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 6",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 7",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 8",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 9",  link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 10", link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 11", link: "#" },
+              { title: "Izure Saikyou no Renkinjutsushi T1 Cap 12", link: "#" }
+            ]
+          }
+        ]
+      }
+    };
+
+    function render(){
+      const id = +new URLSearchParams(location.search).get("id"),
+            a  = data[id],
+            c  = document.getElementById('contenido');
+      if(!a){
+        c.innerHTML = "<p>Anime no encontrado.</p>";
+        return;
+      }
+
+      let html = `
+        <div class="anime-cover">
+          <!-- portada personalizada -->
+          <img src="${a.cover}" alt="Portada ${a.title}">
+        </div>
+        <h1>${a.title}</h1>
+        <p class="desc">${a.desc}</p>
+      `;
+
+      a.seasons.forEach(s => {
+        html += `
+          <details>
+            <summary>Temporada ${s.num}</summary>
+            <div class="season-content">
+              <!-- imagen de la temp ${s.num} -->
+              <img src="${s.cover}" alt="Temporada ${s.num}">
+              <ul class="video-list">
+                ${s.eps.map((ep, i) => `
+                  <li>
+                    <a href="video-player.html?anime=${id}&s=${s.num}&e=${i+1}" onclick="rzOst.pause()">
+                      ${ep.title}
+                    </a>
+                  </li>
+                `).join('')}
+              </ul>
+            </div>
+          </details>
+        `;
+      });
+
+      c.innerHTML = html;
+
+      // Pausar todo
+      const rzOst = document.getElementById('rz-ost'),
+            jjOst = document.getElementById('jj-ost'),
+	    kbMus = document.getElementById('kb-music'),
+            izOst = document.getElementById('iz-ost');
+      [rzOst,jjOst,kbMus,izOst].forEach(audio=>{ audio.pause(); audio.currentTime=0; });
+
+      // Reproducir la pista correspondiente tras un clic
+      if(id === 4){
+        document.addEventListener('click', ()=>{ rzOst.volume=0.5; rzOst.play().catch(()=>{}); }, { once:true });
+      }
+      if(id === 3){
+        document.addEventListener('click', ()=>{ kbMus.volume=0.5; kbMus.play().catch(()=>{}); }, { once:true });
+      }
+      if(id === 13){
+        document.addEventListener('click', ()=>{ izOst.volume=0.5; izOst.play().catch(()=>{}); }, { once:true });
+      }
+      if(id === 2){
+        document.addEventListener('click', ()=>{ jjOst.volume=0.5; jjOst.play().catch(()=>{}); }, { once:true });
+      }
+    }
+
+    function pauseMusic(){
+      document.getElementById('rz-ost').pause();
+      document.getElementById('kb-music').pause();
+      document.getElementById('iz-ost').pause();
+    }
+
+    render();
+  </script>
+</body>
+</html>

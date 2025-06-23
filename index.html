@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Archime</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{
+      height:100%;
+      overflow-x:hidden;
+      overflow-y:auto;
+      font-family:sans-serif;
+      color:#fff;
+    }
+    /* Fondo galaxia */
+    #bg-video{
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      object-fit:cover; z-index:-2;
+    }
+    #overlay{
+      position:fixed; top:0; left:0;
+      width:100%; height:100%;
+      background:rgba(0,0,0,0.6); z-index:-1;
+    }
+    /* Botón circular de apoyo */
+    #support {
+      position: fixed; bottom:1rem; right:1rem;
+      text-align:center; z-index:11;
+    }
+    #tiktok-btn {
+      width:60px; height:60px; border:none;
+      border-radius:50%; background:#fff;
+      padding:0; cursor:pointer;
+      box-shadow:0 2px 8px rgba(0,0,0,0.5);
+      transition:transform .2s; overflow:hidden;
+    }
+    #tiktok-btn:hover{transform:scale(1.1);}
+    #tiktok-btn img{width:100%;height:100%;object-fit:cover;}
+    #support-text{
+      margin-top:.4rem; font-size:.9rem;
+      color:#0ff; text-shadow:1px 1px 2px #000;
+      font-weight:bold; white-space:nowrap;
+    }
+    header{
+      position:sticky; top:0; padding:1rem 2rem;
+      display:flex; align-items:center; gap:1rem;
+      background:rgba(0,0,0,0.7); backdrop-filter:blur(5px);
+      z-index:10; transition:background .3s;
+    }
+    header.scrolled{background:rgba(0,0,0,0.95);}
+    header h1{
+      cursor:pointer; font-size:1.8rem;
+      background:linear-gradient(90deg,#0ff,#f0f);
+      -webkit-background-clip:text; color:transparent;
+    }
+    header select, header input{
+      padding:.5rem 1rem; border:none; border-radius:5px;
+      font-size:1rem; transition:box-shadow .3s;
+      background:rgba(255,255,255,0.9); color:#000;
+    }
+    header select:focus, header input:focus{
+      box-shadow:0 0 8px #0ff;
+    }
+    #search{width:200px;}
+    .container{max-width:1200px;margin:6rem auto 2rem;padding:0 2rem;}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:1.5rem;}
+    .card{
+      opacity:0; transform:translateY(30px);
+      transition:all .6s ease-out; cursor:pointer;
+      border-radius:10px; overflow:hidden; position:relative;
+    }
+    .card.visible{opacity:1;transform:translateY(0);}
+    .card img{
+      width:100%; display:block;
+      filter:brightness(100%);
+      transition:transform .4s,filter .4s;
+    }
+    .card:hover img{
+      transform:scale(1.05); filter:brightness(75%);
+    }
+    .info{
+      position:absolute; bottom:0; left:0; right:0;
+      background:rgba(0,0,0,0.7); padding:.75rem;
+      transform:translateY(100%); transition:transform .3s;
+    }
+    .card:hover .info{transform:translateY(0);}
+    .info strong{display:block;font-size:1.05rem;margin-bottom:.25rem;}
+    .info span{
+      background:#0ff; color:#000;
+      padding:2px 6px; border-radius:4px; font-size:.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Vídeo de fondo -->
+  <video id="bg-video" autoplay loop muted playsinline>
+    <source src="https://www.dropbox.com/scl/fi/ckoormrj6fgd6zcw0xgwq/galaxia.mp4?rlkey=qs4g9k0rbylylu2hnqls0bf5n&st=b99od388&raw=1" type="video/mp4">
+  </video>
+  <div id="overlay"></div>
+
+  <!-- Botón circular de TikTok -->
+  <div id="support">
+    <a href="https://www.tiktok.com/@lucillo23?_t=ZM-8wAXCbcBoQ9&_r=1" target="_blank">
+      <button id="tiktok-btn"><img src="tiktok.jpg" alt="TikTok"></button>
+    </a>
+    <div id="support-text">Sígueme y apóyame</div>
+  </div>
+
+  <header>
+    <h1 onclick="location.reload()">Archime</h1>
+
+    <select id="genre-select" onchange="filtro()">
+      <option value="">Todos los géneros</option>
+      <option>Acción</option>
+      <option>Aventura</option>
+      <option>Comedia</option>
+      <option>Drama</option>
+      <option>Slice of Life</option>
+      <option>Romance</option>
+      <option>Tragedia</option>
+      <option>Psicológico</option>
+      <option>Fantasía</option>
+      <option>Fantasía oscura</option>
+      <option>Ciencia ficción</option>
+      <option>Cyberpunk</option>
+      <option>Sobrenatural</option>
+      <option>Terror</option>
+      <option>Isekai</option>
+      <option>Romance escolar</option>
+      <option>Yaoi</option>
+      <option>Yuri</option>
+      <option>Harem</option>
+      <option>Reverse Harem</option>
+      <option>Shōnen</option>
+      <option>Shōjo</option>
+      <option>Seinen</option>
+      <option>Josei</option>
+      <option>Kodomo</option>
+      <option>Escolar</option>
+      <option>Deportivo</option>
+      <option>Nekketsu</option>
+      <option>Musical</option>
+      <option>Histórico</option>
+      <option>Militar</option>
+      <option>Mecha</option>
+      <option>Misterio</option>
+      <option>Mahō Shōjo</option>
+      <option>Parodia</option>
+      <option>Ecchi</option>
+      <option>Hentai</option>
+      <option>Gore</option>
+      <option>Thriller</option>
+      <option>Thriller psicológico</option>
+      <option>Terror psicológico</option> 
+    </select>
+
+    <select id="rating-select" onchange="filtro()">
+      <option value="">⭐ Todas</option>
+      <option value="excellent">⭐ Excelente (4.8–5.0)</option>
+      <option value="good">⭐ Buena (4.6–4.7)</option>
+      <option value="regular">⭐ Regular (&lt;4.5)</option>
+    </select>
+
+    <input id="search" placeholder="🔍 Buscar anime…" oninput="filtro()">
+  </header>
+
+  <main class="container">
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <script>
+    const animes = [
+      {id:1, title:"Naruto", img:"naruto.jpg", rating:4.5, genres:["Shōnen"]},
+      {id:2, title:"Jujutsu Kaisen", img:"Jujutsu.jpg", rating:4.9, genres:["Fantasía oscura","Acción","Shōnen","Sobrenatural","Acción","Nekketsu"]},
+      {id:3, title:"Konosuba", img:"konosuba.jpg", rating:4.8,
+        genres:["Aventura","Comedia","Fantasía","Sobrenatural","Isekai","Ecchi"]},
+      {id:4, title:"Re:Zero − Empezar vida en otro mundo", img:"rezero.png", rating:4.8,
+        genres:["Acción","Aventura","Drama","Fantasía oscura","Romance","Thriller psicológico","Terror psicológico","Isekai"]},
+      {id:5, title:"Mushoku Tensei", img:"mushoku.jpg", rating:4.8, genres:["Isekai","Ecchi","Romance","Harem","Acción","Aventura","Drama","Fantasía"]},
+      {id:6, title:"Tensei Shitara Slime Datta Ken", img:"slime.jpg", rating:4.9, genres:["Comedia","Isekai","Acción","Aventura","Fantasía"]},
+      {id:7, title:"Saga of Tanya the Evil", img:"Tanya.jpg", rating:4.8, genres:["Acción","Aventura","Fantasía","Militar","Drama","Ciencia ficción"]},
+      {id:8, title:"Overlord", img:"overlord.jpg", rating:4.8, genres:["Acción","Aventura","Fantasía","Sobrenatural","Fantasía oscura","Ciencia ficción","Isekai"]},
+      {id:9, title:"My Hero Academia", img:"boku.jpg", rating:4.7, genres:["Acción","Escolar","Drama","Comedia","Ciencia ficción"]},
+      {id:10, title:"Demon Slayer: Kimetsu no Yaiba", img:"demon.jpg", rating:4.9, genres:["Fantasía oscura","Shōnen","Acción","Aventura","Sobrenatural"]},
+      {id:11, title:"Date a Live", img:"date.jpg ", rating:4.6, genres:["Acción","Comedia","Romance","Aventura","Drama","Ciencia ficción"]},
+      {id:12, title:"Tokyo Revengers", img:"tokyorev.jpg", rating:4.2, genres:["Escolar"]},
+      {id:13, title:"Izure Saikyou no Renkinjutsushi", img:"izure.jpg", rating:4.6,
+        genres:["Aventura","Comedia","Fantasía","Isekai"]},
+      {id:14, title:"Black Clover", img:"blackclover.jpg", rating:4.3, genres:["Fantasía"]},
+      {id:15, title:"Fairy Tail", img:"fairytail.jpg", rating:4.0, genres:["Fantasía"]},
+      {id:16, title:"Sword Art Online", img:"sao.jpg", rating:4.1, genres:["Isekai"]},
+      {id:17, title:"Mob Psycho 100", img:"mob.jpg", rating:4.6, genres:["Comedia"]},
+      {id:18, title:"Chainsaw Man", img:"chainsawman.jpg", rating:4.7, genres:["Gore"]},
+      {id:19, title:"Hunter x Hunter", img:"hxh.jpg", rating:4.9, genres:["Aventura"]},
+      {id:20, title:"Berserk", img:"berserk.jpg", rating:4.8, genres:["Fantasía oscura"]},
+      {id:21, title:"Vinland Saga", img:"vinland.jpg", rating:4.6, genres:["Histórico"]},
+      {id:22, title:"Spy x Family", img:"spyfamily.jpg", rating:4.6, genres:["Comedia"]},
+      {id:23, title:"Dr. Stone", img:"drstone.jpg", rating:4.5, genres:["Ciencia ficción"]},
+      {id:24, title:"The Promised Neverland", img:"neverland.jpg", rating:4.3, genres:[]},
+      {id:25, title:"Erased", img:"erased.jpg", rating:4.4, genres:["Drama"]}
+    ];
+
+    function render(list) {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = list.map(a => `
+        <div class="card" onclick="location='anime-detail.html?id=${a.id}'">
+          <img src="${a.img}" alt="${a.title}">
+          <div class="info">
+            <strong>${a.title}</strong>
+            <span>⭐ ${a.rating.toFixed(1)}</span>
+          </div>
+        </div>
+      `).join('');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add('visible');
+            observer.unobserve(e.target);
+          }
+        });
+      }, {threshold:0.2});
+      document.querySelectorAll('.card').forEach(c=>observer.observe(c));
+    }
+
+    function filtro(){
+      const q = document.getElementById('search').value.toLowerCase();
+      const g = document.getElementById('genre-select').value;
+      const cat = document.getElementById('rating-select').value;
+      const filtrados = animes.filter(a=>{
+        // Busca solo por prefijo:
+        const byText = a.title.toLowerCase().startsWith(q);
+        const byGenre= !g||a.genres.includes(g);
+        let byRating = true;
+        if(cat==='excellent') byRating = a.rating >= 4.8;
+        else if(cat==='good')    byRating = a.rating >= 4.6 && a.rating < 4.8;
+        else if(cat==='regular') byRating = a.rating < 4.6;
+        return byText && byGenre && byRating;
+      });
+      render(filtrados);
+    }
+
+    render(animes);
+  </script>
+</body>
+</html>
